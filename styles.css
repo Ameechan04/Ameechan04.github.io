@@ -41,21 +41,52 @@ body { font-family: sans-serif; text-align: center; margin: 0}
 
 /* END OF NAV BAR */
 
-.topSection { background: url(images/MainPic.png) no-repeat center center fixed; background-size: cover; height: 100vh;
+.topSection { background: url(images/MainPic.png) no-repeat center center; background-size: cover; height: 100vh;
     min-height: 100vh;
     margin-top: 0;
 }
 
 #nameText {
-    padding: 20vh 30vh 0 0;
+    padding: 20vh 50vh 0 0;
     margin-top: 0;
     margin-bottom: 0;
-    font-size: 5em;
+    font-size: 4em;
 
 }
 #courseText {
-    padding: 0vh 37vh 0 0;
+    padding: 5vh 58vh 0 0;
     margin-top: 0;
-    font-size: 3em;
+    margin-bottom: 0;
+    font-size: 2.5em;
 
+}
+#universityText {
+    padding: 5vh 58vh 0 0;
+    margin-top: 0;
+    font-size: 1.5em;
+
+}
+
+#currentProject {
+        margin-top: 10vh;
+        display: flex;
+        align-items: center; /* vertically centre text with images */
+        justify-content: center; /* horizontally centre everything */
+        gap: 10px; /* space between items */
+        padding: 20px;
+}
+
+
+.text-stack {
+    font-size: 1.5em;
+    display: flex;
+    flex-direction: column; /* stack text1 above text2 */
+    align-items: center;
+    text-align: center;
+
+}
+.fern {
+    width: 20px;
+    height: auto;
+    gap: 0;
 }
