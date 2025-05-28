@@ -1,92 +1,218 @@
-body { font-family: sans-serif; text-align: center; margin: 0}
+body, html {
+    font-family: sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+
+
+    height: 100vh;
+    background-color: black;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+* {
+    box-sizing: border-box;
+}
 
 .topnav {
-    background-color: #333;
-    overflow: hidden;
-    margin-bottom: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2vw;
 }
 
-.topnav a {
-    float: right;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
 
+
+#logo {
+    height: 6vh;
+    padding: 1vh;
 }
 
-.topnav p {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    margin: 0;
-    text-decoration: none;
-    font-size: 17px;
+.nav-centre {
+    display: flex;
+    gap: 2vw;
+    flex: 1;
+    justify-content: center;
 }
 
-/* Change the color of links on hover */
-.topnav a:hover {
-    background-color: #ddd;
+.nav-centre a {
+    position: relative;
+    z-index: 1;
+}
+
+
+.nav-centre a,
+.contactNavButton {
+    display: inline-block;
     color: black;
+    text-align: center;
+    padding: 1vh 2vw;
+    text-decoration: none;
+    font-size: 2.5vh;
 }
 
-/* Add a color to the active/current link */
-.topnav a.active {
-    background-color: #04AA6D;
+.topnav a:hover {
+    background-color: black;
     color: white;
+    transition: all 0.5s ease-out;
+    border-radius: 12px;
+
+
 }
 
+
+
+.topnav a.active {
+    text-decoration: underline;
+}
 
 /* END OF NAV BAR */
 
-.topSection { background: url(images/MainPic.png) no-repeat center center; background-size: cover; height: 100vh;
-    min-height: 100vh;
-    margin-top: 0;
-}
-
-#nameText {
-    padding: 20vh 50vh 0 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 4em;
-
-}
-#courseText {
-    padding: 5vh 58vh 0 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 2.5em;
-
-}
-#universityText {
-    padding: 5vh 58vh 0 0;
-    margin-top: 0;
-    font-size: 1.5em;
-
-}
-
-#currentProject {
-        margin-top: 10vh;
-        display: flex;
-        align-items: center; /* vertically centre text with images */
-        justify-content: center; /* horizontally centre everything */
-        gap: 10px; /* space between items */
-        padding: 20px;
-}
-
-
-.text-stack {
-    font-size: 1.5em;
+.page-background {
+    height: 100vh;
+    position: relative;
     display: flex;
-    flex-direction: column; /* stack text1 above text2 */
+    flex-direction: column;
     align-items: center;
-    text-align: center;
+    justify-content: center;
+    margin-bottom: 20vh;
+}
+
+
+.video-wrapper {
+    width: 70vw;
+    height: 70vh;
+
+
+    position: relative;
+    overflow: visible;
+
+    border-radius: 12px;         /* Optional: rounded corners */
+    border: white;
 
 }
-.fern {
-    width: 20px;
-    height: auto;
-    gap: 0;
+
+
+/* Centered video */
+.video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: relative;     /* Needed for z-index to take effect */
+    z-index: 0;
+    filter: blur(2px); /* Adjust value to control blur strength */
+    display: block; /* Removes unwanted inline spacing */
+}
+
+.video-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    color: white;
+    pointer-events: none;
+}
+
+/* Left-side heading */
+#nameText {
+    position: absolute;
+    top: 20%;
+    left: -5%; /* Push slightly off the left */
+    font-size: 7em;
+    margin: 0;
+    color: white;
+    -webkit-text-stroke: 1px black;
+}
+
+/* Right-side heading */
+#courseText {
+    position: absolute;
+    top: 60%;
+    right: -5%; /* Push slightly off the right */
+    font-size: 5em;
+    margin: 0;
+    color: white;
+    -webkit-text-stroke: 1px black;
+}
+
+.scroll-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: auto; /* Allows button + line to size naturally */
+}
+
+
+#scrollButton {
+    opacity: 0;
+    transform: translateY(50px); /* Start lower */
+    transition: all 0.6s ease-out;
+    pointer-events: none; /* Avoid interaction while hidden */
+    background-color: black;
+    color: white;                  /* Blue text */
+    padding: 10px 20px;              /* Padding */
+    border: 2px solid white;       /* Blue border */
+    border-radius: 5px;              /* Rounded corners */
+    font-size: 16px;                 /* Font size */
+    cursor: pointer;
+    margin-top: 3vh;
+    position: relative;
+    z-index: 2;
+    }
+
+#scrollButton.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+#scrollButton:hover {
+    background-color: white;       /* Blue background on hover */
+    color: black;                    /* White text on hover */
+    transform: scale(1.05);          /* Slight zoom */
+}
+
+#scrollButton:active {
+    background-color: #0056b3;       /* Darker blue on click */
+    border-color: #0056b3;
+    transform: scale(0.98);          /* Press effect */
+}
+
+#scrollLine {
+    position: absolute;
+    top: 100%; /* start at bottom of button */
+    left: 50%;
+    transform: translateY(100px); /* Start lower */
+    transition: all 0.6s ease-out;
+    width: 2px;
+    height: 40vh; /* adjust to reach the next section visually */
+    background-color: white;
+    z-index: 1;
+}
+#scrollLine.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+#nextSection {
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

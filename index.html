@@ -7,24 +7,41 @@
 </head>
 <body>
 <div class="topnav">
-    <a class="active" href="#home">Home</a>
-    <a href="#news">News</a>
-    <a href="#contact">Contact</a>
-    <a href="#about">About</a>
-    <p>andrewmeechan.com</p>
+    <img id="logo" src="images/logo.png" alt="logo">
+    <div class="nav-centre">
+        <a class="active" href="#home">Home</a>
+        <a href="#blog">Blog</a>
+        <a href="#games">Games</a>
+        <a href="#projects">Projects</a>
+    </div>
+    <a class="contactNavButton" href="#contact">Contact</a>
+
 
 </div>
-<div class="topSection">
-    <h1 id="nameText">Andrew K. Meechan</h1>
-    <h2 id="courseText">MEng Computer Science</h2>
-    <h2 id="universityText">University of Strathclyde</h2>
 
-    <div id="currentProject">
-        <img src="images/fern-left-dark.png" class="fern">
-        <p class="text-stack">Current Project: </p>
-        <a href="" class="text-stack">TinyTown</a>
-        <img src="images/fern-right-dark.png" class="fern">
+<div class="page-background">
+    <div class="video-wrapper">
+
+        <video id="videoPlayer"  autoplay muted playsinline>
+<!--            <source src="videos/chessDemo.mp4" type="video/mp4">-->
+            Your browser does not support the video tag.
+        </video>
+
+        <div class="video-text">
+            <h1 id="nameText"></h1>
+            <h2 id="courseText"></h2>
+        </div>
+    </div>
+    <div class="scroll-container">
+        <button id="scrollButton">DISCOVER</button>
+        <div class="scrollLine" id="scrollLine"></div>
     </div>
 </div>
+
+<section id="nextSection">
+   <h1>Test</h1>
+</section>
+
+<script src="scripts.js"></script>
 </body>
 </html>
