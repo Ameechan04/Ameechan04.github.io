@@ -1,0 +1,66 @@
+
+* {
+    box-sizing: border-box;
+}
+
+.topnav {
+    font-family: sans-serif;
+    text-align: center;
+
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2vw;
+}
+
+
+
+#logo {
+    height: 6vh;
+    padding: 1vh;
+}
+
+.nav-centre {
+    display: flex;
+    gap: 2vw;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-centre a {
+    position: relative;
+    z-index: 1;
+}
+
+
+.nav-centre a,
+.contactNavButton {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 1vh 2vw;
+    text-decoration: none;
+    font-size: 2.5vh;
+}
+
+.topnav a:hover {
+    background-color: black;
+    color: white;
+    transition: all 0.5s ease-out;
+    border-radius: 12px;
+
+
+}
+
+
+
+.topnav a.active {
+    text-decoration: underline;
+}
