@@ -234,7 +234,7 @@ body, html {
     flex-direction: column;
     align-items: flex-start;      /* left-align children */
     transform: translateX(-80%);   /* shift entire block right */
-    margin-top: 5vh;
+    margin-top: 15vh;
 
 }
 
