@@ -103,9 +103,9 @@ window.addEventListener("DOMContentLoaded", () => {
             videoPlayer.load();
 
             if (index === 3 || index === 0) {
-                videoPlayer.style.filter = "blur(2px) brightness(0.6)";
+                videoPlayer.style.filter = "blur(4px) brightness(0.6)";
             } else {
-                videoPlayer.style.filter = "brightness(1)";
+                videoPlayer.style.filter = "blur(3px) brightness(1)";
             }
 
             // swipe in animation

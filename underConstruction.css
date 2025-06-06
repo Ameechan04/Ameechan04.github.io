@@ -10,7 +10,9 @@ body {
 }
 
 .contentPending {
-    margin-top: 70px; /* Match your navbar height */
+    margin-top: 70px;
+    padding-top: 25px;
+    font-size: 3vh;
 }
 
 #underConstructionImage {

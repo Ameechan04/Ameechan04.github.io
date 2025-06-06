@@ -65,18 +65,35 @@
 </div>
 
 <div id="finalSection">
-    <h1>Website Stats</h1>
-    <h2>Total Views: </h2>
-    <h2 id="stats"></h2>
-    <iframe src="https://andrewmeechan.goatcounter.com?access-token=271n5e6e3w5a2z683y4b6n256j2w6a6l563lw4c"
-            width="80%"
-            height="600"
-            style="border:none;">
-    </iframe>
+    <h1>Achievements</h1>
+    <div id="achievement-list"></div>
 </div>
 
 </div>
 </div>
+
+<!--<h1 id="views">Loading views...</h1>-->
+
+
+<!--<script>-->
+<!--    var t = setInterval(function() {-->
+<!--        if (window.goatcounter && window.goatcounter.visit_count) {-->
+<!--            clearInterval(t);-->
+<!--            window.goatcounter.visit_count({-->
+<!--                append: null, // Do NOT append to body-->
+<!--                target: '#views', // Set our h1 as the target-->
+<!--                type: 'html' // Use innerHTML-->
+<!--            });-->
+<!--        }-->
+<!--    }, 100);-->
+<!--</script>-->
+
+<!--<script data-goatcounter="https://andrewmeechan.goatcounter.com/count"-->
+<!--        src="https://gc.zgo.at/count.js"></script>-->
+
+<div id="achievement-toast" class="hidden"></div>
+
 <script src="scripts.js"></script>
+<script src="achievements.js"></script>
 </body>
 </html>
