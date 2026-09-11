@@ -1,6 +1,11 @@
 import FaultyTerminal from "./components/FaultyTerminal"
 import TextType from "./components/TextType"
 import Dock from "./components/Dock"
+import { motion } from "motion/react"
+import andrewIcon from "./assets/icons/andrewIcon.svg"
+import educationIcon from "./assets/icons/educationIcon.svg"
+import computerIcon from "./assets/icons/computerIcon.svg"
+import officeIcon from "./assets/icons/officeIcon.svg"
 
 import {
   VscHome,
@@ -12,24 +17,48 @@ import {
 function App() {
   const items = [
     {
-      icon: <VscHome size={40} />,
-      label: "Home",
+      icon: (
+        <img
+          src={andrewIcon}
+          alt=""
+          style={{ width: 60, height: 60 }}
+        />
+      ),
+      label: "About Me",
       onClick: () => alert("Home!"),
     },
     {
-      icon: <VscArchive size={40} />,
-      label: "Archive",
+     icon: (
+        <img
+          src={computerIcon}
+          alt=""
+          style={{ width: 50, height: 50 }}
+        />
+      ),
+      label: "Projects",
+      onClick: () => alert("Profile!"),
+    },
+     {
+      icon: (
+        <img
+          src={educationIcon}
+          alt=""
+          style={{ width: 60, height: 60 }}
+        />
+      ),
+      label: "Education",
       onClick: () => alert("Archive!"),
     },
     {
-      icon: <VscAccount size={40} />,
-      label: "Profile",
-      onClick: () => alert("Profile!"),
-    },
-    {
-      icon: <VscSettingsGear size={40} />,
-      label: "Settings",
-      onClick: () => alert("Settings!"),
+      icon: (
+        <img
+          src={officeIcon}
+          alt=""
+          style={{ width: 60, height: 60 }}
+        />
+      ),
+      label: "Work Experience",
+      onClick: () => alert("Work Experience!"),
     },
   ]
 
@@ -66,7 +95,20 @@ function App() {
         />
 
         {/* Dock */}
-        <div
+       <motion.div
+          initial={{
+            opacity: 0,
+            y: 40,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            delay: 2,    // waits 1500ms
+            duration: 1.5, // fade/slide duration
+            ease: "easeOut",
+          }}
           style={{
             marginTop: "40px",
             pointerEvents: "auto",
@@ -76,10 +118,10 @@ function App() {
           <Dock
             items={items}
             panelHeight={150}
-            baseItemSize={80}
-            magnification={110}
+            baseItemSize={100}
+            magnification={140}
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* Background */}

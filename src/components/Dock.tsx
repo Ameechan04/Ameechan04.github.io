@@ -128,7 +128,7 @@ function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
           exit={{ opacity: 0, y: 0 }}
           transition={{ duration: 0.2 }}
           // Styling for hovered text
-          className={`${className} absolute top-32 left-1/2 w-fit whitespace-pre rounded-md border border-neutral-700 px-3 bg-black/90 py-1 text-m text-white`}
+          className={`${className} absolute top-40 left-1/2 w-fit whitespace-pre rounded-md border border-neutral-700 px-3 bg-black/90 py-1 text-m text-white`}
           role="tooltip"
           style={{ x: '-50%' }}
         >
