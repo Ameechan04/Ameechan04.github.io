@@ -6,15 +6,35 @@ import andrewIcon from "./assets/icons/andrewIcon.svg"
 import educationIcon from "./assets/icons/educationIcon.svg"
 import computerIcon from "./assets/icons/computerIcon.svg"
 import officeIcon from "./assets/icons/officeIcon.svg"
+import { useEffect, useState } from "react"
 
 function App() {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth)
+
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
+
+  const isPhone = screenWidth < 600
+  const isTablet = screenWidth >= 600 && screenWidth < 1024
+
   const items = [
     {
       icon: (
         <img
           src={andrewIcon}
           alt=""
-          style={{ width: 60, height: 60 }}
+          style={{
+            width: "50%",
+            height: "50%",
+            objectFit: "contain",
+          }}
         />
       ),
       label: "About Me",
@@ -25,7 +45,11 @@ function App() {
         <img
           src={computerIcon}
           alt=""
-          style={{ width: 50, height: 50 }}
+          style={{
+            width: "60%",
+            height: "60%",
+            objectFit: "contain",
+          }}
         />
       ),
       label: "Projects",
@@ -36,7 +60,11 @@ function App() {
         <img
           src={educationIcon}
           alt=""
-          style={{ width: 60, height: 60 }}
+           style={{
+            width: "65%",
+            height: "65%",
+            objectFit: "contain",
+          }}
         />
       ),
       label: "Education",
@@ -47,7 +75,11 @@ function App() {
         <img
           src={officeIcon}
           alt=""
-          style={{ width: 60, height: 60 }}
+          style={{
+            width: "40%",
+            height: "40%",
+            objectFit: "contain",
+          }}
         />
       ),
       label: "Work Experience",
@@ -58,9 +90,9 @@ function App() {
   return (
     <>
       {/* Text + Dock overlay */}
-      <div
+     <div
         style={{
-          position: "absolute",
+          position: "fixed",
           inset: 0,
           zIndex: 999,
           display: "flex",
@@ -68,13 +100,19 @@ function App() {
           alignItems: "center",
           justifyContent: "center",
           pointerEvents: "none",
+          overflow: "hidden",
+          padding: isPhone ? "20px" : "40px",
+          boxSizing: "border-box",
         }}
-      >
+        >
         <TextType
           style={{
             color: "white",
-            fontSize: "10vh",
+            fontSize: "clamp(2.4rem, 8vw, 6rem)",
+            textAlign: "center",
+            whiteSpace: "nowrap",
           }}
+          
           text={["Andrew Meechan", "Software Engineer"]}
           typingSpeed={100}
           pauseDuration={1700}
@@ -95,22 +133,39 @@ function App() {
             y: 0,
           }}
           transition={{
-            delay: 2,    // waits 1500ms
-            duration: 1.5, // fade/slide duration
+            delay: 2, 
+            duration: 1.5,
             ease: "easeOut",
           }}
           style={{
-            marginTop: "40px",
+            marginTop: isPhone ? "20px" : isTablet ? "30px" : "40px",
             pointerEvents: "auto",
             color: "white",
           }}
         >
-          <Dock
-            items={items}
-            panelHeight={150}
-            baseItemSize={100}
-            magnification={140}
-          />
+         <Dock
+          items={items}
+          panelHeight={
+            isPhone ? 95 :
+            isTablet ? 120 :
+            150
+          }
+          baseItemSize={
+            isPhone ? 62 :
+            isTablet ? 80 :
+            100
+          }
+          magnification={
+            isPhone ? 82 :
+            isTablet ? 110 :
+            140
+          }
+          distance={
+            isPhone ? 100 :
+            isTablet ? 150 :
+            200
+          }
+        />
         </motion.div>
       </div>
 
@@ -118,29 +173,29 @@ function App() {
       <div
         style={{
           width: "100vw",
-          height: "100vh",
+          height: "100dvh",
           position: "absolute",
           inset: 0,
         }}
       >
         <FaultyTerminal
-          scale={1.6}
+          scale={5}
           gridMul={[2, 1]}
-          digitSize={1.2}
-          timeScale={0.5}
+          digitSize={1.5}
+          timeScale={0.1}
           pause={false}
           scanlineIntensity={0.3}
           glitchAmount={1}
-          flickerAmount={1}
-          noiseAmp={1}
-          chromaticAberration={0}
-          dither={0}
+          flickerAmount={0.5}
+          noiseAmp={0.7}
+          chromaticAberration={25}
+          dither={0.5}
           curvature={0}
           tint="#ffffff"
           mouseReact
-          mouseStrength={0.3}
+          mouseStrength={8}
           pageLoadAnimation
-          brightness={0.7}
+          brightness={0.6}
         />
       </div>
     </>

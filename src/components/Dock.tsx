@@ -177,7 +177,7 @@ export default function Dock({
           isHovered.set(0);
           mouseX.set(Infinity);
         }}
-className={`${className} flex items-end w-fit gap-4 rounded-2xl pb-2 px-4`}
+className={`${className} flex items-end w-fit gap-2 sm:gap-3 md:gap-4 rounded-2xl pb-2 px-2 sm:px-3 md:px-4`}
         role="toolbar"
         aria-label="Application dock"
       >
