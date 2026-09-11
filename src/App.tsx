@@ -7,13 +7,6 @@ import educationIcon from "./assets/icons/educationIcon.svg"
 import computerIcon from "./assets/icons/computerIcon.svg"
 import officeIcon from "./assets/icons/officeIcon.svg"
 
-import {
-  VscHome,
-  VscArchive,
-  VscAccount,
-  VscSettingsGear,
-} from "react-icons/vsc"
-
 function App() {
   const items = [
     {
@@ -88,9 +81,6 @@ function App() {
           showCursor
           cursorCharacter="_"
           deletingSpeed={75}
-          variableSpeedEnabled={false}
-          variableSpeedMin={60}
-          variableSpeedMax={120}
           cursorBlinkDuration={0.5}
         />
 
