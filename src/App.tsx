@@ -76,8 +76,8 @@ function App() {
           <Dock
             items={items}
             panelHeight={150}
-            baseItemSize={60}
-            magnification={100}
+            baseItemSize={80}
+            magnification={110}
           />
         </div>
       </div>
