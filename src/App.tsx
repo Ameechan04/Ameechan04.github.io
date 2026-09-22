@@ -13,6 +13,42 @@ import Projects from "./sections/Projects";
 import Education from "./sections/Education";
 import WorkExperience from "./sections/WorkExperience";
 
+const randomBetween = (min: number, max: number) =>
+  Math.random() * (max - min) + min;
+
+const randomInt = (min: number, max: number) =>
+  Math.floor(randomBetween(min, max + 1));
+
+const randomTint = () => {
+  const r = randomInt(120, 255);
+  const g = randomInt(120, 255);
+  const b = randomInt(120, 255);
+
+  return `#${[r, g, b]
+    .map(value => value.toString(16).padStart(2, "0"))
+    .join("")}`;
+};
+
+const defaultBackground = {
+  scale: 5,
+  gridMul: [2, 1] as [number, number],
+  digitSize: 1.5,
+  timeScale: 0.1,
+  pause: false,
+  scanlineIntensity: 0.3,
+  glitchAmount: 1,
+  flickerAmount: 0.5,
+  noiseAmp: 0.7,
+  chromaticAberration: 25,
+  dither: 0.5,
+  curvature: 0,
+  tint: "#ffffff",
+  mouseReact: true,
+  mouseStrength: 8,
+  pageLoadAnimation: true,
+  brightness: 0.6,
+};
+
 function App() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
 
@@ -28,13 +64,42 @@ function App() {
 
   const isPhone = screenWidth < 600
   const isTablet = screenWidth >= 600 && screenWidth < 1024
-
+  const [background, setBackground] = useState(defaultBackground);
+  const [backgroundVersion, setBackgroundVersion] = useState(0);
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({
       behavior: "smooth",
     });
   };
 
+
+  const randomiseBackground = () => {
+    setBackground({
+      scale: randomBetween(3, 7),
+      gridMul: [
+        randomBetween(1, 4),
+        randomBetween(0.5, 2),
+      ],
+      digitSize: randomBetween(0.1, 2.2),
+      timeScale: randomBetween(0.05, 0.25),
+      pause: false,
+      scanlineIntensity: randomBetween(0.1, 0.8),
+      glitchAmount: randomBetween(0.5, 2),
+      flickerAmount: randomBetween(0.1, 1),
+      noiseAmp: randomBetween(0.3, 1),
+      chromaticAberration: randomBetween(0, 40),
+      dither: randomBetween(0.1, 0.9),
+      curvature: randomBetween(-10,10),
+      tint: randomTint(),
+      mouseReact: true,
+      mouseStrength: randomBetween(3, 12),
+      pageLoadAnimation: true,
+      brightness: randomBetween(0.4, 0.8),
+    });
+
+    setBackgroundVersion(prev => prev + 1);
+  };
+  
   const items = [
     {
       icon: (
@@ -112,24 +177,9 @@ function App() {
               zIndex: 0,
             }}
           >
-            <FaultyTerminal
-              scale={5}
-              gridMul={[2, 1]}
-              digitSize={1.5}
-              timeScale={0.1}
-              pause={false}
-              scanlineIntensity={0.3}
-              glitchAmount={1}
-              flickerAmount={0.5}
-              noiseAmp={0.7}
-              chromaticAberration={25}
-              dither={0.5}
-              curvature={0}
-              tint="#ffffff"
-              mouseReact
-              mouseStrength={8}
-              pageLoadAnimation
-              brightness={0.6}
+           <FaultyTerminal
+              key={backgroundVersion}
+              {...background}
             />
           </div>
 
@@ -137,7 +187,7 @@ function App() {
             className="absolute top-5 right-5 z-20"
           >
             <Accessibility
-              onClick={() => alert("Accessibility")}
+                onRandomiseBackground={randomiseBackground}
             />
           </div>
 
