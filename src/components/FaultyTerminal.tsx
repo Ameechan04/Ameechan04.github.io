@@ -279,6 +279,7 @@ export default function FaultyTerminal({
   const rendererRef = useRef<Renderer>(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const smoothMouseRef = useRef({ x: 0.5, y: 0.5 });
+  const isTouchingRef = useRef(false);
   const frozenTimeRef = useRef(0);
   const rafRef = useRef<number>(0);
   const loadAnimationStartRef = useRef<number>(0);
@@ -288,13 +289,46 @@ export default function FaultyTerminal({
 
   const ditherValue = useMemo(() => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither), [dither]);
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
+  const updatePointerPosition = useCallback((clientX: number, clientY: number) => {
     const ctn = containerRef.current;
     if (!ctn) return;
+
     const rect = ctn.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = 1 - (e.clientY - rect.top) / rect.height;
+
+    const x = (clientX - rect.left) / rect.width;
+    const y = 1 - (clientY - rect.top) / rect.height;
+
     mouseRef.current = { x, y };
+  }, []);
+
+  const handlePointerMove = useCallback(
+    (e: PointerEvent) => {
+      // Mouse should always behave exactly as before.
+      if (e.pointerType === 'mouse') {
+        updatePointerPosition(e.clientX, e.clientY);
+        return;
+      }
+
+      // Touch/pen only affects the terminal while being held down.
+      if (isTouchingRef.current) {
+        updatePointerPosition(e.clientX, e.clientY);
+      }
+    },
+    [updatePointerPosition]
+  );
+
+  const handlePointerDown = useCallback(
+    (e: PointerEvent) => {
+      if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+        isTouchingRef.current = true;
+        updatePointerPosition(e.clientX, e.clientY);
+      }
+    },
+    [updatePointerPosition]
+  );
+
+  const handlePointerUp = useCallback(() => {
+    isTouchingRef.current = false;
   }, []);
 
   useEffect(() => {
@@ -395,17 +429,22 @@ export default function FaultyTerminal({
     };
     rafRef.current = requestAnimationFrame(update);
     ctn.appendChild(gl.canvas);
-
     if (mouseReact) {
-      window.addEventListener('mousemove', handleMouseMove, true);
+      window.addEventListener('pointerdown', handlePointerDown, true);
+      window.addEventListener('pointermove', handlePointerMove, true);
+      window.addEventListener('pointerup', handlePointerUp, true);
+      window.addEventListener('pointercancel', handlePointerUp, true);
     }
 
     return () => {
       cancelAnimationFrame(rafRef.current);
       resizeObserver.disconnect();
       if (mouseReact) {
-        window.removeEventListener('mousemove', handleMouseMove, true);
-      } 
+        window.removeEventListener('pointerdown', handlePointerDown, true);
+        window.removeEventListener('pointermove', handlePointerMove, true);
+        window.removeEventListener('pointerup', handlePointerUp, true);
+        window.removeEventListener('pointercancel', handlePointerUp, true);
+      }
       
       if (gl.canvas.parentElement === ctn) ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
@@ -432,10 +471,20 @@ export default function FaultyTerminal({
     pageLoadAnimation,
     brightness,
     lightMode,
-    handleMouseMove
+    handlePointerDown,
+    handlePointerMove,
+    handlePointerUp
   ]);
 
   return (
-    <div ref={containerRef} className={`w-full h-full relative overflow-hidden ${className}`} style={style} {...rest} />
+  <div
+    ref={containerRef}
+    className={`w-full h-full relative overflow-hidden ${className}`}
+    style={{
+      touchAction: 'none',
+      ...style
+    }}
+    {...rest}
+  />
   );
 }

@@ -34,6 +34,7 @@ type DockItemProps = {
   children: React.ReactNode;
   onClick?: () => void;
   mouseX: MotionValue<number>;
+  dockHovered: MotionValue<number>;
   spring: SpringOptions;
   distance: number;
   baseItemSize: number;
@@ -46,12 +47,15 @@ function DockItem({
   className = '',
   onClick,
   mouseX,
+  dockHovered,
   spring,
   distance,
   magnification,
   baseItemSize,
   label
 }: DockItemProps) {
+  const touchStartTime = useRef(0);
+  const touchInteraction = useRef(false);
   const ref = useRef<HTMLDivElement>(null);
   const isHovered = useMotionValue(0);
 
@@ -73,19 +77,92 @@ function DockItem({
     }
   };
 
+  const handlePointerDown = (
+    e: React.PointerEvent<HTMLDivElement>
+  ) => {
+    if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+
+    touchInteraction.current = true;
+    touchStartTime.current = performance.now();
+
+    const rect = ref.current?.getBoundingClientRect();
+
+    if (rect) {
+      // Pretend the mouse is directly over this item.
+      mouseX.set(rect.left + rect.width / 2);
+    }
+
+    isHovered.set(1);
+    dockHovered.set(1);
+
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerUp = (
+    e: React.PointerEvent<HTMLDivElement>
+  ) => {
+    if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+
+    const heldFor = performance.now() - touchStartTime.current;
+
+    // Guarantees the user sees the expansion before the action occurs.
+    const minimumExpandTime = 250;
+    const remainingTime = Math.max(0, minimumExpandTime - heldFor);
+
+    window.setTimeout(() => {
+      onClick?.();
+
+      window.setTimeout(() => {
+        isHovered.set(0);
+        dockHovered.set(0);
+        mouseX.set(Infinity);
+      }, 100);
+    }, remainingTime);
+  };
+
+  const handlePointerCancel = () => {
+    isHovered.set(0);
+    dockHovered.set(0);
+    mouseX.set(Infinity);
+    touchInteraction.current = false;
+  };
+
+  const handleClick = (
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
+    // Mobile browsers generate a click after pointerUp.
+    // We've already handled the action ourselves.
+    if (touchInteraction.current) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      touchInteraction.current = false;
+      return;
+    }
+
+    // Normal desktop click.
+    onClick?.();
+  };
+
   return (
     <motion.div
       ref={ref}
       style={{
         width: size,
-        height: size
+        height: size,
+        touchAction: 'none'
       }}
       onHoverStart={() => isHovered.set(1)}
       onHoverEnd={() => isHovered.set(0)}
       onFocus={() => isHovered.set(1)}
       onBlur={() => isHovered.set(0)}
-      onClick={onClick}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerCancel}
+      onClick={handleClick}
       onKeyDown={handleKeyDown}
+
+      
       // the background and border
       className={`relative inline-flex items-center justify-center rounded-full bg-black/90 border-[#3F3F46] border-2 shadow-md ${className}`}
       tabIndex={0}
@@ -128,7 +205,7 @@ function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
           exit={{ opacity: 0, y: 0 }}
           transition={{ duration: 0.2 }}
           // Styling for hovered text
-          className={`${className} absolute top-40 left-1/2 w-fit whitespace-pre rounded-md border border-neutral-700 px-3 bg-black/90 py-1 text-m text-white`}
+          className={`${className} absolute top-full mt-3 left-1/2 w-fit whitespace-pre rounded-md border border-neutral-700 px-3 bg-black/90 py-1 text-m text-white`}
           role="tooltip"
           style={{ x: '-50%' }}
         >
@@ -169,9 +246,9 @@ export default function Dock({
   return (
     <motion.div style={{ height, scrollbarWidth: 'none' }} className="mx-2 flex max-w-full items-center">
       <motion.div
-        onMouseMove={({ pageX }) => {
+        onMouseMove={({ clientX }) => {
           isHovered.set(1);
-          mouseX.set(pageX);
+          mouseX.set(clientX);
         }}
         onMouseLeave={() => {
           isHovered.set(0);
@@ -182,11 +259,12 @@ className={`${className} flex items-end w-fit gap-2 sm:gap-3 md:gap-4 rounded-2x
         aria-label="Application dock"
       >
         {items.map((item, index) => (
-          <DockItem
+         <DockItem
             key={index}
             onClick={item.onClick}
             className={item.className}
             mouseX={mouseX}
+            dockHovered={isHovered}
             spring={spring}
             distance={distance}
             magnification={magnification}
