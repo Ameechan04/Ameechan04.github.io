@@ -2,12 +2,16 @@ import FaultyTerminal from "./components/FaultyTerminal"
 import TextType from "./components/TextType"
 import Accessibility from "./components/Accessibility";
 import Dock from "./components/Dock"
+import DayNightToggle from "./components/DayNightToggle";
+
 import { motion } from "motion/react"
+import { useEffect, useState } from "react"
+
 import andrewIcon from "./assets/icons/andrewIcon.svg"
 import educationIcon from "./assets/icons/educationIcon.svg"
 import computerIcon from "./assets/icons/computerIcon.svg"
 import officeIcon from "./assets/icons/officeIcon.svg"
-import { useEffect, useState } from "react"
+
 import AboutMe from "./sections/AboutMe";
 import Projects from "./sections/Projects";
 import Education from "./sections/Education";
@@ -49,7 +53,10 @@ const defaultBackground = {
   brightness: 0.6,
 };
 
+
 function App() {
+  const [backgroundEnabled, setBackgroundEnabled] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
 
   useEffect(() => {
@@ -164,30 +171,124 @@ function App() {
   ];
 
   return (
-    <>
+    <div className="bg-[#0d0d0d]">
       {/* Text + Dock overlay */}
       <section
-          className="relative w-full h-dvh overflow-hidden"
+          className="relative w-full h-dvh overflow-visible"
         >
           {/* FaultyTerminal background */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 0,
-            }}
-          >
-           <FaultyTerminal
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+
+            // Extend 100px into the next section
+            height: "calc(100% + 180px)",
+
+            zIndex: 0,
+            backgroundColor: "#0d0d0d",
+
+            clipPath: `
+              polygon(
+                0 0,
+                100% 0,
+
+                100% calc(100% - 30px),
+                94% calc(100% - 30px),
+
+                94% calc(100% - 65px),
+                92% calc(100% - 65px),
+
+                92% calc(100% - 100px),
+                91% calc(100% - 100px),
+
+                91% calc(100% - 290px),
+                83% calc(100% - 290px),
+
+                83% calc(100% - 180px),
+                80% calc(100% - 180px),
+
+                80% calc(100% - 220px),
+                78% calc(100% - 220px),
+
+                78% calc(100% - 180px),
+                75% calc(100% - 180px),
+
+                75% calc(100% - 130px),
+                72% calc(100% - 130px),
+
+                72% calc(100% - 155px),
+                69% calc(100% - 155px),
+
+                69% calc(100% - 125px),
+                66% calc(100% - 125px),
+
+                66% calc(100% - 235px),
+                59% calc(100% - 235px),
+
+                59% calc(100% - 150px),
+                54% calc(100% - 150px),
+
+                54% calc(100% - 225px),
+                49% calc(100% - 225px),
+
+                49% calc(100% - 145px),
+                47% calc(100% - 145px),
+
+                47% calc(100% - 110px),
+                45% calc(100% - 110px),
+
+                45% calc(100% - 75px),
+                39% calc(100% - 75px),
+
+                39% calc(100% - 55px),
+                36% calc(100% - 55px),
+
+                36% calc(100% - 175px),
+                30% calc(100% - 175px),
+
+                30% calc(100% - 160px),
+                28% calc(100% - 160px),
+
+                28% calc(100% - 175px),
+                25% calc(100% - 175px),
+
+                25% calc(100% - 95px),
+                18% calc(100% - 95px),
+
+                18% calc(100% - 60px),
+                15% calc(100% - 60px),
+
+                15% calc(100% - 20px),
+                0 calc(100% - 20px)
+              )
+            `,
+          }}
+        >
+          {backgroundEnabled && (
+            <FaultyTerminal
               key={backgroundVersion}
               {...background}
             />
-          </div>
+          )}
+        </div>
 
-          <div
-            className="absolute top-5 right-5 z-20"
-          >
+          <div className="absolute top-5 right-5 z-20 flex items-start gap-3">
+            <DayNightToggle
+              isDarkMode={isDarkMode}
+              onToggle={() =>
+                setIsDarkMode((prev) => !prev)
+              }
+            />
+
             <Accessibility
-                onRandomiseBackground={randomiseBackground}
+              backgroundEnabled={backgroundEnabled}
+              onBackgroundToggle={() =>
+                setBackgroundEnabled((prev) => !prev)
+              }
+              onRandomiseBackground={randomiseBackground}
             />
           </div>
 
@@ -273,12 +374,19 @@ function App() {
               />
             </motion.div>
           </div>
+          {/* <div
+            className="absolute bottom-0 left-0 z-10 h-24 w-full bg-[#0d0d0d]"
+            style={{
+              clipPath:
+                "polygon(0 70%, 25% 70%, 29% 35%, 58% 35%, 62% 80%, 100% 80%, 100% 100%, 0 100%)",
+            }}
+          /> */}
         </section>
         <AboutMe />
         <Projects />
         <Education />
         <WorkExperience />
-    </>
+    </div>
   )
 }
 

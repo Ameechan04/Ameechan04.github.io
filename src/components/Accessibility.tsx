@@ -2,11 +2,12 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 export default function Accessibility({
+  backgroundEnabled,
+  onBackgroundToggle,
   onRandomiseBackground,
 }: AccessibilityProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [backgroundEnabled, setBackgroundEnabled] = useState(true);
   const [dyslexiaFontEnabled, setDyslexiaFontEnabled] = useState(false);
 
   return (
@@ -134,14 +135,12 @@ export default function Accessibility({
               {/* Background */}
               <div className="flex items-center justify-between gap-4">
                 <span className="text-sm">
-                  Background
+                  Animated Background
                 </span>
 
                 <Toggle
-                  enabled={backgroundEnabled}
-                  onChange={() =>
-                    setBackgroundEnabled((prev) => !prev)
-                  }
+                    enabled={backgroundEnabled}
+                    onChange={onBackgroundToggle}
                 />
               </div>
 
@@ -160,23 +159,28 @@ export default function Accessibility({
               </div>
 
               {/* Randomise */}
-              <button
-               onClick={onRandomiseBackground}
-                className="
-                  mt-2
-                  w-full
-                  rounded-xl
-                  border
-                  border-[#3F3F46]
-                  px-4
-                  py-2
-                  text-sm
-                  transition
-                  hover:bg-white/10
-                "
-              >
+             <button
+                onClick={onRandomiseBackground}
+                disabled={!backgroundEnabled}
+                className={`
+                    mt-2
+                    w-full
+                    rounded-xl
+                    border
+                    border-[#3F3F46]
+                    px-4
+                    py-2
+                    text-sm
+                    transition
+                    ${
+                    backgroundEnabled
+                        ? "hover:bg-white/10 cursor-pointer"
+                        : "opacity-40 cursor-not-allowed"
+                    }
+                `}
+                >
                 Randomise Background
-              </button>
+                </button>
             </div>
           </motion.div>
         )}
@@ -191,8 +195,11 @@ type ToggleProps = {
 };
 
 type AccessibilityProps = {
+  backgroundEnabled: boolean;
+  onBackgroundToggle: () => void;
   onRandomiseBackground: () => void;
 };
+
 function Toggle({
   enabled,
   onChange,
